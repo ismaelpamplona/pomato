@@ -1,0 +1,21 @@
+[package]
+name = "pomodoro-automation"
+version = "0.1.0"
+edition = "2021"
+about = "Pomato: The Artisanal Pomodoro Timer – Crafted with the robustness of Rust, Pomato is your CLI companion designed to enhance productivity through the proven Pomodoro Technique. Melding simplicity with efficiency, Pomato offers a minimalistic yet powerful interface to help you focus on what matters most. Whether you're a developer, a writer, or any professional in between, Pomato's customizable timer empowers you to break your work into intervals, traditionally 25 minutes in length, separated by short breaks. It's more than a timer—it's a catalyst for a more productive and balanced work ethic. Let Pomato guide you through your work sessions with precision and ease, all while keeping your terminal sleek and clean. Get ready to conquer distractions and cultivate a rhythm of focused work followed by rest, with Pomato, the Rust-built Pomodoro timer for the discerning professional."
+license-file = "LICENSE"
+homepage = "https://github.com/cwnt-io/pomato"
+repository = "https://github.com/cwnt-io/pomato"
+keywords = ["pomodoro", "tomato", "timer"]
+categories = ["command-line-utilities", "development-tools", "productivity"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+clap = { version = "4.4.7", features = ["derive"] }
+rodio = "0.17.3"
+
+[[bin]]
+name = "pomato"
+path = "src/main.rs"
