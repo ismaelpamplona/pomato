@@ -1,8 +1,5 @@
 use anyhow::Result;
-use std::{
-    io::{self, Write},
-    process::Command as ProcessCommand,
-};
+use std::io::{self, Write};
 
 pub fn clear_screen() -> Result<()> {
     // Clear the screen in a cross-platform way

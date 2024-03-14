@@ -11,7 +11,6 @@ pub struct Cli {
 
 impl Cli {
     pub fn run(&self) -> Result<()> {
-        // start_timer(self.duration)?;
         start_timer(self.duration)?;
         Ok(())
     }

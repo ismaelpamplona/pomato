@@ -1,7 +1,9 @@
 use crate::ascii_art::generate_large_number;
 use crate::utils::{clear_screen, print_header};
 use anyhow::Result;
-use rodio::{source::Source, OutputStream};
+use rodio::{Decoder, OutputStream, Sink};
+use std::fs::File;
+use std::io::BufReader;
 use std::{
     thread,
     time::{Duration, Instant},
@@ -31,9 +33,6 @@ pub fn start_timer(minutes: u64) -> Result<()> {
     let start_time = Instant::now();
     let end_time = start_time + total_duration;
 
-    // Initialize the audio system
-    let (_stream, stream_handle) = OutputStream::try_default().unwrap();
-
     while Instant::now() < end_time {
         let remaining_time = end_time - Instant::now();
         clear_screen()?;
@@ -41,20 +40,22 @@ pub fn start_timer(minutes: u64) -> Result<()> {
         thread::sleep(Duration::new(1, 0)); // Sleep for 1 second
     }
 
-    play_alarm_sound(&stream_handle)?;
-
     println!("Timer complete!");
+    play_alarm_sound();
+
     println!("\n");
     Ok(())
 }
 
-fn play_alarm_sound(stream_handle: &rodio::OutputStreamHandle) -> Result<()> {
-    let file = std::fs::File::open(
-        "/home/isma/workspace/cwnt/repos/me/pomato/mixkit-clock-countdown-bleeps-916.wav",
-    )?;
-    let source = rodio::Decoder::new(std::io::BufReader::new(file))?;
-    if let Err(err) = stream_handle.play_raw(source.convert_samples()) {
-        eprintln!("Error playing sound: {}", err);
-    }
+fn play_alarm_sound() -> Result<(), Box<dyn std::error::Error>> {
+    let (_stream, handle) = OutputStream::try_default()?;
+    let sink = Sink::try_new(&handle)?;
+
+    let file = File::open("sound.wav")?;
+    let source = Decoder::new(BufReader::new(file))?;
+
+    sink.append(source);
+    sink.sleep_until_end();
+
     Ok(())
 }
